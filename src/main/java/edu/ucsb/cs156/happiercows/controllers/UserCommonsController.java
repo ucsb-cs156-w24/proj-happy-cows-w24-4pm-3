@@ -19,6 +19,7 @@ import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import edu.ucsb.cs156.happiercows.errors.NoCowsException;
 import edu.ucsb.cs156.happiercows.errors.NotEnoughMoneyException;
+import edu.ucsb.cs156.happiercows.errors.NegativeBuyNumberException;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -73,7 +74,7 @@ public class UserCommonsController extends ApiController {
   @PutMapping("/buy")
   public ResponseEntity<String> putUserCommonsByIdBuy(
           @Parameter(name="commonsId") @RequestParam Long commonsId,
-          @Parameter(name="numCows") @RequestParam int numCows) throws NotEnoughMoneyException, JsonProcessingException{
+          @Parameter(name="numCows") @RequestParam int numCows) throws NotEnoughMoneyException, JsonProcessingException, NegativeBuyNumberException{
 
         User u = getCurrentUser().getUser();
         Long userId = u.getId();
@@ -83,8 +84,12 @@ public class UserCommonsController extends ApiController {
         UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
         .orElseThrow(
             () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
+        
+        if(numCows < 0){
+          throw new NegativeBuyNumberException("You cannot sell a negative number of cows!");
+        }
 
-        if(userCommons.getTotalWealth() >= (commons.getCowPrice() * numCows)){
+        else if(userCommons.getTotalWealth() >= (commons.getCowPrice() * numCows)){
           userCommons.setTotalWealth(userCommons.getTotalWealth() - (commons.getCowPrice() * numCows));
           userCommons.setNumOfCows(userCommons.getNumOfCows() + numCows);
           userCommons.setCowsBought(userCommons.getCowsBought() + numCows);
