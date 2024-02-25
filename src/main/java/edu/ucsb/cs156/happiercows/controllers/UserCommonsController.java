@@ -86,7 +86,7 @@ public class UserCommonsController extends ApiController {
             () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
         
         if(numCows < 0){
-          throw new NegativeBuyNumberException("You cannot sell a negative number of cows!");
+          throw new NegativeBuyNumberException("You cannot buy a negative number of cows!");
         }
 
         else if(userCommons.getTotalWealth() >= (commons.getCowPrice() * numCows)){
