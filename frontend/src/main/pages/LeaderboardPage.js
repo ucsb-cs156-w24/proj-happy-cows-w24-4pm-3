@@ -65,29 +65,26 @@ export default function LeaderboardPage() {
                 backgroundImage: `url(${Background})`,
             }}
         >
-            <BasicLayout>
-                <Button
+             <BasicLayout>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h1>Leaderboard</h1>
+                    <Button
                         onClick={() => navigate(-1)}
                         data-testid="LeaderboardPage-back-button"
                     >
                         Back
-                </Button>
-            </BasicLayout>
-            <BasicLayout>
-                <div className="pt-2">
-                    <h1>Leaderboard</h1>
-                    {showLeaderboard ? (
-                        <>
-                            <LeaderboardTable
-                                leaderboardUsers={userCommons}
-                                currentUser={currentUser}
-                            />
-                        </>
-                    ) : (
-                        <p>You're not authorized to see the leaderboard.</p>
-                    )}
+                    </Button>
                 </div>
-                
+                {showLeaderboard ? (
+                    <>
+                        <LeaderboardTable
+                            leaderboardUsers={userCommons}
+                            currentUser={currentUser}
+                        />
+                    </>
+                ) : (
+                    <p>You're not authorized to see the leaderboard.</p>
+                )}
             </BasicLayout>
         </div>
     );
