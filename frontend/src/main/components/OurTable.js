@@ -1,78 +1,117 @@
 import React from "react";
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useSortBy, usePagination } from 'react-table';
 import { Table, Button } from "react-bootstrap";
-import Plaintext from "main/components/Utils/Plaintext";
-// Stryker disable all
+
 var tableStyle = {
   "background": "white",
-  "display": "block" ,
-  "maxWidth": "-moz-fit-content" ,
-  "margin": "0 auto" ,
-  "overflowX": "auto" ,
+  "display": "block",
+  "maxWidth": "-moz-fit-content",
+  "margin": "0 auto",
+  "overflowX": "auto",
   "whiteSpace": "nowrap"
 };
-// Stryker restore all
-export default function OurTable({ columns, data, testid = "testid", ...rest }) {
 
+export default function OurTable({ columns, data, testid = "testid", pageSize = 10, ...rest }) {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
     prepareRow,
   } = useTable({
     columns,
     data,
-    ...(rest.initialState && {
-      initialState: rest.initialState
-    })
-  }, useSortBy)
+    initialState: { pageSize },
+    ...rest
+  }, useSortBy, usePagination)
 
   return (
-    <Table style={tableStyle} {...getTableProps()} striped bordered hover >
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                data-testid={`${testid}-header-${column.id}`}
-              >
-                {column.render('Header')}
-                <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
-                  {column.isSorted
-                    ? column.isSortedDesc
-                      ? ' 🔽'
-                      : ' 🔼'
-                    : ''}
-                </span>
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell, _index) => {
-                return (
+    <>
+      <Table style={tableStyle} {...getTableProps()} striped bordered hover>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  data-testid={`${testid}-header-${column.id}`}
+                >
+                  {column.render('Header')}
+                  <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(row => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell, _index) => (
                   <td
                     {...cell.getCellProps()}
                     data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
                   >
                     {cell.render('Cell')}
                   </td>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
-    </Table>
+                ))}
+              </tr>
+            )
+          })}
+        </tbody>
+      </Table>
+      {/* Pagination UI */}
+      <div className="pagination">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          {'<'}
+        </button>{' '}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          {'>'}
+        </button>{' '}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>{' '}
+        <span>
+          Page{' '}
+          <strong>
+            {pageOptions.indexOf(page) + 1} of {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <select
+          value={pageSize}
+          onChange={e => {
+            setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
+    </>
   )
 }
+
 
 // The callback function for ButtonColumn should have the form
 // (cell) => { doSomethingWith(cell); }
