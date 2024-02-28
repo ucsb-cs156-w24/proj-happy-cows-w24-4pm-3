@@ -12,7 +12,6 @@ var tableStyle = {
   "overflowX": "auto",
   "whiteSpace": "nowrap"
 };
-// Stryker restore all
 
 export default function OurTable({ columns, data, testid = "testid", pageSize = 10, ...rest }) {
   const {
@@ -204,3 +203,4 @@ export function DateColumn(label, getDate) {
   }
   return column;
 }
+// Stryker restore all
