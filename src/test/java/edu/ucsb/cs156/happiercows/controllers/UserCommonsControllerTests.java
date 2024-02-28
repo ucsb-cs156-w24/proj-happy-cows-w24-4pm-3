@@ -380,6 +380,8 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     public void test_BuyCow_negative_value() throws Exception {
         // arrange
         UserCommons origUserCommons = getTestUserCommons();
+        origUserCommons.setNumOfCows(10);
+        origUserCommons.setTotalWealth(1000);
 
         when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(origUserCommons));
