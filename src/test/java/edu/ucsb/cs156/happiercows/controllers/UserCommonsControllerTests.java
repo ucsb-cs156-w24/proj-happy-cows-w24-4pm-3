@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -380,8 +379,6 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     public void test_BuyCow_negative_value() throws Exception {
         // arrange
         UserCommons origUserCommons = getTestUserCommons();
-        origUserCommons.setNumOfCows(10);
-        origUserCommons.setTotalWealth(1000);
 
         when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(origUserCommons));
