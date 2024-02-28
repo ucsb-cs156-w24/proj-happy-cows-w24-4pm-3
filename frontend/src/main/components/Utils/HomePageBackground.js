@@ -21,8 +21,7 @@ export default function getBackgroundImage(time, res) {
       } else {
         return BackgroundNight;
       }
-    }
-    if( res === 0 ) { 
+    } else { 
       if (time >= 6 && time < 9) {
         return BackgroundMorning_LowRes;
       } else if (time >= 9 && time < 18) {
