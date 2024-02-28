@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -373,6 +374,28 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         Map<String, Object> jsonResponse = responseToJson(response);
         assertEquals(expectedJson, jsonResponse);
     }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_BuyCow_negative_value() throws Exception {
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
+                .thenReturn(Optional.of(origUserCommons));
+
+        // act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=-3")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        // assert
+        String expectedString = "{\"message\":\"You cannot buy a negative number of cows!\",\"type\":\"NegativeBuyNumberException\"}";
+        Map<String, Object> expectedJson = mapper.readValue(expectedString, Map.class);
+        Map<String, Object> jsonResponse = responseToJson(response);
+        assertEquals(expectedJson, jsonResponse);
+    }
+
 
 
     @WithMockUser(roles = {"USER"})
