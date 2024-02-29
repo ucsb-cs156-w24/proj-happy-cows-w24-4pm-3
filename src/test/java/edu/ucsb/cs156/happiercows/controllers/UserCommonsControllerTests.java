@@ -383,6 +383,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
 
         when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(origUserCommons));
+        when(commonsRepository.findById(eq(1L))).thenReturn(Optional.of(testCommons));
 
         // act
         MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=-3")
