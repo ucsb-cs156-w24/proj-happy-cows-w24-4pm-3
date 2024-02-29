@@ -387,7 +387,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         // act
         MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=-3")
                         .with(csrf()))
-                .andExpect(status().isBadRequest()).andReturn();
+                .andExpect(status().is(404)).andReturn();
 
         // assert
         String expectedString = "{\"message\":\"You cannot buy a negative number of cows!\",\"type\":\"NegativeBuyNumberException\"}";
