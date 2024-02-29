@@ -44,7 +44,7 @@ public abstract class ApiController {
     );
   }
   @ExceptionHandler({ NegativeSellNumberException.class })
-  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Object handleNegativeSellNumberException(Throwable e) {
     return Map.of(
       "type", e.getClass().getSimpleName(),
