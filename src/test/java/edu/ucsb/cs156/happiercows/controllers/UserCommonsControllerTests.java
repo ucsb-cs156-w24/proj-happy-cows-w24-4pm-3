@@ -397,7 +397,28 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, jsonResponse);
     }
 
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_BuyCow_zero_value() throws Exception {
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
 
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
+                .thenReturn(Optional.of(origUserCommons));
+        when(commonsRepository.findById(eq(1L))).thenReturn(Optional.of(testCommons));
+
+        //act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=0")
+                    .with(csrf()))
+            .andExpect(status().isOk()) // Buying 0 cows is a valid operation per our code (since 0 is not negative), it just doesn't result in anything actually occuring
+            .andReturn();
+
+        //assert
+        String expectedJson = mapper.writeValueAsString(origUserCommons); // Serialize the original state to JSON
+        String responseString = response.getResponse().getContentAsString(); // Get the response body as a string
+
+        assertEquals(expectedJson, responseString); // Assert that the response body matches the original state
+    }
 
     @WithMockUser(roles = {"USER"})
     @Test
