@@ -348,6 +348,50 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, jsonResponse);
 
     }
+    // test for selling negative cows
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_SellCow_commons_exists_sell_negative_cows() throws Exception {
+
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L))).thenReturn(Optional.of(origUserCommons));
+        when(commonsRepository.findById(eq(1L))).thenReturn(Optional.of(testCommons));
+
+        // act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/sell?commonsId=1&numCows=-1")
+                .with(csrf())).andExpect(status().is(400)).andReturn();
+
+        // assert
+        String expectedString = "{\"message\":\"You cannot sell a negative number of cows!\",\"type\":\"NegativeSellNumberException\"}";
+        Map<String, Object> expectedJson = mapper.readValue(expectedString, Map.class);
+        Map<String, Object> jsonResponse = responseToJson(response);
+        assertEquals(expectedJson, jsonResponse);
+
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_SellCow_zero_value() throws Exception {
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
+                .thenReturn(Optional.of(origUserCommons));
+        when(commonsRepository.findById(eq(1L))).thenReturn(Optional.of(testCommons));
+
+        //act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/sell?commonsId=1&numCows=0")
+                    .with(csrf()))
+            .andExpect(status().isOk()) // Sellling 0 cows is a valid operation per our code (since 0 is not negative), it just doesn't result in anything actually occuring
+            .andReturn();
+
+        //assert
+        String expectedJson = mapper.writeValueAsString(origUserCommons); // Serialize the original state to JSON
+        String responseString = response.getResponse().getContentAsString(); // Get the response body as a string
+
+        assertEquals(expectedJson, responseString); // Assert that the response body matches the original state
+    }
 
     @WithMockUser(roles = {"USER"})
     @Test

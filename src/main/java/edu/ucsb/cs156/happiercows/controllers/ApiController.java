@@ -4,6 +4,7 @@ import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import edu.ucsb.cs156.happiercows.errors.NegativeBuyNumberException;
 import edu.ucsb.cs156.happiercows.errors.NoCowsException;
 import edu.ucsb.cs156.happiercows.errors.NotEnoughMoneyException;
+import edu.ucsb.cs156.happiercows.errors.NegativeSellNumberException;
 import edu.ucsb.cs156.happiercows.errors.NegativeBuyNumberException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,6 +40,15 @@ public abstract class ApiController {
   @ExceptionHandler({ NoCowsException.class, NotEnoughMoneyException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Object handleBadRequest(Throwable e) {
+    return Map.of(
+      "type", e.getClass().getSimpleName(),
+      "message", e.getMessage()
+    );
+  }
+
+  @ExceptionHandler({ NegativeSellNumberException.class })
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public Object handleNegativeSellNumberException(Throwable e) {
     return Map.of(
       "type", e.getClass().getSimpleName(),
       "message", e.getMessage()
