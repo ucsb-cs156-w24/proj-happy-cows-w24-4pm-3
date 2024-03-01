@@ -24,7 +24,8 @@ const LoginCard = () => {
 export default function LoginPage() {
 
   const time = new Date().getHours();
-  const Background = getBackgroundImage(time);
+  const res = 0; //setting to low resoltion for faster rendering 
+  const Background = getBackgroundImage(time, res);
   
   return (
     <div  style={
