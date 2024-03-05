@@ -65,7 +65,7 @@ export default function LeaderboardPage() {
                 backgroundImage: `url(${Background})`,
             }}
         >
-             <BasicLayout>
+             {/* <BasicLayout>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h1>Leaderboard</h1>
                     <Button
@@ -85,8 +85,8 @@ export default function LeaderboardPage() {
                 ) : (
                     <p>You're not authorized to see the leaderboard.</p>
                 )}
-            </BasicLayout>
-            {/* <BasicLayout>
+            </BasicLayout> */}
+            <BasicLayout>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                         <h1>Leaderboard</h1>
@@ -108,7 +108,7 @@ export default function LeaderboardPage() {
                         <p>You're not authorized to see the leaderboard.</p>
                     )}
                 </div>
-            </BasicLayout> */}
+            </BasicLayout>
 
         </div>
     );
