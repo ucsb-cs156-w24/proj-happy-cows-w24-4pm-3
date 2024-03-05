@@ -94,8 +94,8 @@ describe("LeaderboardPage tests", () => {
         );
         expect(leaderboard_main_div).toHaveAttribute(
             "style",
-            "background-size: cover; background-image: url(PlayPageBackground.png);"
-        );
+            "background-size: cover; background-image: url(PlayPageBackground.png); width: 100%; min-height: 100vh;"
+            );
 
         expect(leaderboard_back_button).toBeInTheDocument();
     });
