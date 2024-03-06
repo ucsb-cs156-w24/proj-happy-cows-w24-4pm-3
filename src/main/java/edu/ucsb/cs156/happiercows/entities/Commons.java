@@ -29,6 +29,7 @@ public class Commons {
     private double startingBalance;
     private LocalDateTime startingDate;
     private LocalDateTime lastDate;
+    private boolean showChat;
     private boolean showLeaderboard;
     
     private int capacityPerUser;
