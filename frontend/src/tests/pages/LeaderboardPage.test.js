@@ -212,7 +212,7 @@ describe("LeaderboardPage tests", () => {
     });
 
 
-    test("renders leaderboard for users when showLeaderboard = true", async () => {
+    test("renders correct style for leaderboard for users when showLeaderboard = true", async () => {
         setupAdmin();
         axiosMock.onGet("/api/commons", { params: { id: 1 } }).reply(200, {
             username: "Anika",
