@@ -68,8 +68,14 @@ export default function LeaderboardPage() {
             }}
         >
             <BasicLayout>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+                <div 
+                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}
+                    data-testid="LeaderboardPage-layout-div" 
+                >
+                    <div 
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto' }}
+                        data-testid="LeaderboardPage-header-div" 
+                    >
                         <h1>Leaderboard</h1>
                         <Button
                             onClick={() => navigate(-1)}
@@ -79,7 +85,7 @@ export default function LeaderboardPage() {
                         </Button>
                     </div>
                     {showLeaderboard ? (
-                        <div style={{ width: '100%', margin: '0 auto' }}>
+                        <div data-testid="LeaderboardPage-leaderboard-div" style={{ width: '100%', margin: '0 auto' }}>
                             <LeaderboardTable
                                 leaderboardUsers={userCommons}
                                 currentUser={currentUser}
@@ -90,7 +96,7 @@ export default function LeaderboardPage() {
                     )}
                 </div>
             </BasicLayout>
-
         </div>
     );
+    
 }

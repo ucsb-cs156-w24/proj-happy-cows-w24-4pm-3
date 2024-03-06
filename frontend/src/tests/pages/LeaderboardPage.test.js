@@ -144,6 +144,15 @@ describe("LeaderboardPage tests", () => {
             expect(axiosMock.history.get.length).toEqual(4);
         });
         expect(await screen.findByText("Total Wealth")).toBeInTheDocument();
+
+        const leaderboard_main_div = screen.getByTestId(
+            "LeaderboardPage-main-div"
+        );
+
+        expect(leaderboard_main_div).toHaveAttribute(
+            "style",
+            "background-size: cover; background-image: url(PlayPageBackground.png); width: 100%; min-height: 100vh;"
+        );
     });
 
     test("renders leaderboard error message for users when showLeaderboard = false", async () => {
@@ -201,4 +210,77 @@ describe("LeaderboardPage tests", () => {
         });
         expect(await screen.findByText("Total Wealth")).toBeInTheDocument();
     });
+
+
+    test("renders leaderboard for users when showLeaderboard = true", async () => {
+        setupAdmin();
+        axiosMock.onGet("/api/commons", { params: { id: 1 } }).reply(200, {
+            username: "Anika",
+            totalWealth: 100.0,
+            numOfCows: 5,
+            cowHealth: 100,
+            cowsBought: 10,
+            cowsSold: 3,
+            cowDeaths: 0,
+            showLeaderboard: true,
+        });
+        axiosMock
+            .onGet("/api/usercommons/commons/all", { params: { commonsId: 1 } })
+            .reply(200, []);
+        const queryClient = new QueryClient();
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <LeaderboardPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        const leaderboardTableDiv = await screen.findByTestId("LeaderboardPage-leaderboard-div");
+        expect(leaderboardTableDiv).toHaveStyle({
+            width: '100%', 
+            margin: '0 auto',
+        });
+    });
+
+    test('div elements have correct styles applied', async () => {
+        setupAdmin();
+        axiosMock.onGet("/api/commons", { params: { id: 1 } }).reply(200, {
+            username: "Anika",
+            totalWealth: 100.0,
+            numOfCows: 5,
+            cowHealth: 100,
+            cowsBought: 10,
+            cowsSold: 3,
+            cowDeaths: 0,
+            showLeaderboard: true,
+        });
+        render(
+            <QueryClientProvider client={new QueryClient()}>
+                <MemoryRouter>
+                    <LeaderboardPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+    
+        const flexContainer = screen.getByTestId('LeaderboardPage-layout-div');
+        const contentContainer = screen.getByTestId('LeaderboardPage-header-div');
+    
+        expect(flexContainer).toHaveStyle({
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: '100%',
+        });
+    
+        expect(contentContainer).toHaveStyle({
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            maxWidth: '1200px',
+            margin: '0 auto',
+        });
+    });
+    
 });
