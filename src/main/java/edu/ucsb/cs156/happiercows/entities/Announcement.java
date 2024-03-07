@@ -22,10 +22,8 @@ public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name="commons_id")
-    private long commonsId;
     
+    private long commonsId;
     private LocalDateTime start = LocalDateTime.now();
     private LocalDateTime end;
     private String announcement;

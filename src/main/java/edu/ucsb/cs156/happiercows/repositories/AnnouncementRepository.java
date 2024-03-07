@@ -2,12 +2,11 @@ package edu.ucsb.cs156.happiercows.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Query;
+import java.lang.Iterable;
 
 import edu.ucsb.cs156.happiercows.entities.Announcement;
 
 @Repository
 public interface AnnouncementRepository extends CrudRepository<Announcement, Long> {
-    @Query("SELECT a FROM announcement a WHERE a.commonsId = :commonsId")
     Iterable<Announcement> findByCommonsId(Long commonsId);
 }
