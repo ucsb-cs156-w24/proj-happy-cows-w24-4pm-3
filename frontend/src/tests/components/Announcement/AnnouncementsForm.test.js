@@ -87,8 +87,13 @@ describe("AnnouncementForm tests", () => {
         const submitButton = screen.getByText(/Create/);
         fireEvent.click(submitButton);
 
-        await screen.findByText(/Start is required (in ISO format)./);
+        await screen.findByText('Start is required (in ISO format).');
         expect(screen.getByText(/Announcement is required./)).toBeInTheDocument();
+
+        //await screen.findByText(/Start is required (in ISO format)./);
+        //expect(screen.getByText(/Start is required (in ISO format)./)).toBeInTheDocument();
+
+
 
         // const endInput = screen.getByTestId(`${testId}-end`);
         // fireEvent.change(endInput, { target: { value: "a" } });
