@@ -16,7 +16,9 @@ export default function CommonsOverview({ commonsPlus, currentUser }) {
             <Card.Body>
                 <Row>
                     <Col>
-                        <Card.Title>Today is day {daysSinceTimestamp(commonsPlus.commons.startingDate)}!</Card.Title>
+                        <Card.Title>
+                            {daysSinceTimestamp(commonsPlus.commons.startingDate) >= 0 ? `day ${daysSinceTimestamp(commonsPlus.commons.startingDate)}!` : "Starting Date is in the Future!"}
+                        </Card.Title>
                         <Card.Text>Total Players: {commonsPlus.totalUsers}</Card.Text>
                     </Col>
                     <Col>

@@ -32,6 +32,13 @@ describe("dateUtils tests", () => {
     });
   });
 
+  describe("daysSinceTimestamp tests", () => {
+    it("calculates days properly", () => {
+      jest.useFakeTimers().setSystemTime(new Date('2022-05-23'));
+      expect(daysSinceTimestamp(1653346250817)).toBe(-1);
+    });
+  });
+
   describe("formatTime tests", () => {
     it('should return empty string for null input', () => {
       expect(formatTime(null)).toEqual('');
