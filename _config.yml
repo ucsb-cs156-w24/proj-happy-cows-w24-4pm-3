@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-w24/proj-happy-cows-w24-4pm-3
 owner: ucsb-cs156-w24
 repo_name: proj-happy-cows-w24-4pm-3
-pull_requests: [{"author":{"id":"MDQ6VXNlcjkxNDk5MjI5","is_bot":false,"login":"lpullela","name":""},"headRefName":"Laya-Future2","number":34,"title":"future date bug fixed","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/34"}]
+pull_requests: [{"author":{"id":"U_kgDOBXuwTQ","is_bot":false,"login":"hugolin0","name":""},"headRefName":"Hugo-AnnouncementIssueB2","number":35,"title":"Add Controller and Tests for Announcement Issue B2","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/35"},{"author":{"id":"MDQ6VXNlcjkxNDk5MjI5","is_bot":false,"login":"lpullela","name":""},"headRefName":"Laya-Future2","number":34,"title":"future date bug fixed","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/34"}]
