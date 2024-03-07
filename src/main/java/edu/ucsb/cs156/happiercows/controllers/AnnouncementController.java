@@ -80,7 +80,7 @@ public class AnnouncementController extends ApiController {
     }
 
     @Operation(summary = "Get announcement by id")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/id")
     public Announcement getAnnouncementById(@Parameter(name="id") @RequestParam Long id) throws JsonProcessingException {
         Announcement announcement = announcementRepository.findById(id)
@@ -90,7 +90,7 @@ public class AnnouncementController extends ApiController {
     } 
 
     @Operation(summary = "Get announcement by commons")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/commons")
     public Iterable<Announcement> getAnnouncementByCommons(@Parameter(name="commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
         // Commons exists
@@ -161,6 +161,7 @@ public class AnnouncementController extends ApiController {
         announcementRepository.save(announcements);
         return announcements;
     }
+    
 
 
 }
