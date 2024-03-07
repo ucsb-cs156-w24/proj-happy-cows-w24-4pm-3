@@ -150,17 +150,6 @@ describe("OurTable tests", () => {
         fireEvent.click(firstPageButton);
         expect(screen.getByText('react-table 1')).toBeInTheDocument(); // First item's content
     });
-
-    // test("page size selector changes number of rows displayed with twentyRows", () => {
-    //     render(<OurTable columns={columns} data={twentyRows} />);
-    //     const pageSizeSelector = screen.getByText('Show 10'); // Assuming default pageSize is 10
-    //     fireEvent.click(pageSizeSelector);
-    //     // Verify rows per page has changed (specific verification depends on your table's rendering logic)
-    //     fireEvent.mouseDown(pageSizeSelector);
-    //     const pageSizeSelector2 = screen.getByText('Show 20');
-    //     fireEvent.mouseDown(pageSizeSelector2);
-    // });
-
     test("page index displays correctly for next and prev buttons", () => {
         render(<OurTable columns={columns} data={twentyRows} pageSize={5} />);
         const nextPageButton = screen.getByText('>');
