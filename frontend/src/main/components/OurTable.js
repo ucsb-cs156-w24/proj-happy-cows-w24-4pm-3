@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { Table, Button } from "react-bootstrap";
 import Plaintext from "main/components/Utils/Plaintext";
 
-// Stryker disable all
+
 var tableStyle = {
   "background": "white",
   "display": "block",
@@ -13,7 +13,24 @@ var tableStyle = {
   "whiteSpace": "nowrap"
 };
 
-export default function OurTable({ columns, data, testid = "testid", pageSize = 10, ...rest }) {
+export default function OurTable({ columns, data, testid = "testid", pageSize = 5, ...rest }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const gonextPage = () => {
+    nextPage()
+    setCurrentPage(currentPage+1);
+  }
+  const gopreviousPage = () => {
+    previousPage()
+    setCurrentPage(currentPage-1);
+  }
+  const gotoLastPage = (pageCount) => {
+    gotoPage(pageCount)
+    setCurrentPage(pageCount+1);
+  }
+  const gotoFirstPage = () => {
+    gotoPage(0)
+    setCurrentPage(1)
+  }
   const {
     getTableProps,
     getTableBodyProps,
@@ -26,7 +43,6 @@ export default function OurTable({ columns, data, testid = "testid", pageSize = 
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
     prepareRow,
   } = useTable({
     columns,
@@ -79,25 +95,24 @@ export default function OurTable({ columns, data, testid = "testid", pageSize = 
       </Table>
       {/* Pagination UI */}
       <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+        <button onClick={() => gotoFirstPage()} disabled={!canPreviousPage}>
           {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+        </button>
+        <button onClick={() => gopreviousPage()} disabled={!canPreviousPage}>
           {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
+        </button>
+        <button onClick={() => gonextPage()} disabled={!canNextPage}>
           {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+        </button>
+        <button onClick={() => gotoLastPage(pageCount - 1)} disabled={!canNextPage}>
           {'>>'}
-        </button>{' '}
+        </button>
         <span>
-          Page{' '}
-          <strong>
-            {pageOptions.indexOf(page) + 1} of {pageOptions.length}
-          </strong>{' '}
+          <strong data-testid={`testId-pagination`}>
+            {currentPage} of {pageOptions.length}
+          </strong>
         </span>
-        <select
+        {/* <select
           value={pageSize}
           onChange={e => {
             setPageSize(Number(e.target.value))
@@ -108,7 +123,7 @@ export default function OurTable({ columns, data, testid = "testid", pageSize = 
               Show {pageSize}
             </option>
           ))}
-        </select>
+        </select> */}
       </div>
     </>
   )
@@ -203,4 +218,3 @@ export function DateColumn(label, getDate) {
   }
   return column;
 }
-// Stryker restore all
