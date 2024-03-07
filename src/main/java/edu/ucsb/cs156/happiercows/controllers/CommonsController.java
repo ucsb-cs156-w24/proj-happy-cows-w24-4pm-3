@@ -149,6 +149,7 @@ public class CommonsController extends ApiController {
         updated.setStartingDate(params.getStartingDate());
         updated.setLastDate(params.getLastDate());
         updated.setShowLeaderboard(params.getShowLeaderboard());
+        updated.setShowChat(params.getShowChat());
         updated.setDegradationRate(params.getDegradationRate());
         updated.setCapacityPerUser(params.getCapacityPerUser());
         updated.setCarryingCapacity(params.getCarryingCapacity());
@@ -216,6 +217,7 @@ public class CommonsController extends ApiController {
                 .lastDate(params.getLastDate())
                 .degradationRate(params.getDegradationRate())
                 .showLeaderboard(params.getShowLeaderboard())
+                .showChat(params.getShowChat())
                 .capacityPerUser(params.getCapacityPerUser())
                 .carryingCapacity(params.getCarryingCapacity());
 
