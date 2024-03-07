@@ -6,6 +6,7 @@ import Plaintext from "main/components/Utils/Plaintext";
 
 var tableStyle = {
   "background": "white",
+
   "display": "block",
   "maxWidth": "-moz-fit-content",
   "margin": "0 auto",
