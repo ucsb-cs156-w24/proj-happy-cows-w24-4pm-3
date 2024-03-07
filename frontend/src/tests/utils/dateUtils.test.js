@@ -32,8 +32,8 @@ describe("dateUtils tests", () => {
     });
   });
 
-  describe("daysSinceTimestamp tests", () => {
-    it("calculates days properly", () => {
+  describe("daysSinceTimestamp test future", () => {
+    it("calculates future date", () => {
       jest.useFakeTimers().setSystemTime(new Date('2022-05-23'));
       expect(daysSinceTimestamp(1653346250817)).toBe(-1);
     });

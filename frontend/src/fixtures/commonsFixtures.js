@@ -1,5 +1,6 @@
 const commonsFixtures = {
-    threeCommons: [
+    threeCommons: 
+    [
         {
             "id": 5,
             "name": "Seths Common",
@@ -56,7 +57,7 @@ const commonsFixtures = {
         }
     ],
     oneCommons:
-        [
+    [
             {
                 "id": 1,
                 "name": "Anika's Commons",
@@ -75,9 +76,30 @@ const commonsFixtures = {
                 "belowCapacityHealthUpdateStrategy": "Constant",
                 "aboveCapacityHealthUpdateStrategy": "Linear"
             }
-        ],
-
-    sevenCommons: [
+    ],
+    specialCommons:
+    [
+            {
+                "id": 24,
+                "name": "Laya's Commons",
+                "day": 5,
+                "startingDate": "2030-03-05T15:50:10",
+                "lastDate": "2040-03-05T15:50:10",
+                "startingBalance": 2000.50,
+                "totalPlayers": 50,
+                "cowPrice": 15,
+                "milkPrice": 10,
+                "degradationRate": .5,
+                "showLeaderboard": true,
+                "capacityPerUser": 5,
+                "carryingCapacity": 314,
+                "effectiveCapacity": 314,
+                "belowCapacityHealthUpdateStrategy": "Constant",
+                "aboveCapacityHealthUpdateStrategy": "Linear"
+            }
+    ],
+    sevenCommons: 
+    [
         {
             "id": 10,
             "name": "Seths Commons",
