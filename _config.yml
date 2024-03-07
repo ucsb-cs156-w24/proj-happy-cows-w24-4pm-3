@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-w24/proj-happy-cows-w24-4pm-3
 owner: ucsb-cs156-w24
 repo_name: proj-happy-cows-w24-4pm-3
-pull_requests: [{"author":{"id":"U_kgDOBdHRmA","is_bot":false,"login":"srambhatla30","name":""},"headRefName":"Sid-AnnouncementIssueF1","number":31,"title":"added fixtures, form, table, and storybook entries + tests for F1","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/31"},{"author":{"id":"MDQ6VXNlcjY2ODkyOTQw","is_bot":false,"login":"konarkv","name":""},"headRefName":"Konark-Pagination","number":11,"title":"Konark pagination","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/11"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjY2ODkyOTQw","is_bot":false,"login":"konarkv","name":""},"headRefName":"Konark-Pagination","number":11,"title":"Konark pagination","url":"https://github.com/ucsb-cs156-w24/proj-happy-cows-w24-4pm-3/pull/11"}]
