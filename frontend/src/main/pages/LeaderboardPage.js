@@ -63,29 +63,40 @@ export default function LeaderboardPage() {
             style={{
                 backgroundSize: "cover",
                 backgroundImage: `url(${Background})`,
+                width: '100%', 
+                minHeight: '100vh', 
             }}
         >
             <BasicLayout>
-                <div className="pt-2">
-                    <h1>Leaderboard</h1>
+                <div 
+                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}
+                    data-testid="LeaderboardPage-layout-div" 
+                >
+                    <div 
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto' }}
+                        data-testid="LeaderboardPage-header-div" 
+                    >
+                        <h1>Leaderboard</h1>
+                        <Button
+                            onClick={() => navigate(-1)}
+                            data-testid="LeaderboardPage-back-button"
+                        >
+                            Back
+                        </Button>
+                    </div>
                     {showLeaderboard ? (
-                        <>
+                        <div data-testid="LeaderboardPage-leaderboard-div" style={{ width: '100%', margin: '0 auto' }}>
                             <LeaderboardTable
                                 leaderboardUsers={userCommons}
                                 currentUser={currentUser}
                             />
-                        </>
+                        </div>
                     ) : (
                         <p>You're not authorized to see the leaderboard.</p>
                     )}
                 </div>
-                <Button
-                    onClick={() => navigate(-1)}
-                    data-testid="LeaderboardPage-back-button"
-                >
-                    Back
-                </Button>
             </BasicLayout>
         </div>
     );
+    
 }

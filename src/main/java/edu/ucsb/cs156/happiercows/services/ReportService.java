@@ -53,6 +53,7 @@ public class ReportService {
                 .startingBalance(commons.getStartingBalance())
                 .startingDate(commons.getStartingDate())
                 .showLeaderboard(commons.isShowLeaderboard())
+                .showChat(commons.isShowChat())
                 .carryingCapacity(commons.getCarryingCapacity())
                 .degradationRate(commons.getDegradationRate())
                 .belowCapacityHealthUpdateStrategy(commons.getBelowCapacityHealthUpdateStrategy())
