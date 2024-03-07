@@ -317,6 +317,7 @@ function CommonsForm({initialCommons, submitAction, buttonLabel = "Create"}) {
                         {...register("startingDate", {
                             valueAsDate: true,
                             validate: {isPresent: (v) => !isNaN(v)},
+                            max: {value: curr.getTime(), message: "Cannot select future date."},
                         })}
                     />
                     <Form.Control.Feedback type="invalid">

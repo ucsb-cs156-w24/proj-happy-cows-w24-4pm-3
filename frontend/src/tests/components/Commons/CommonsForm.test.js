@@ -233,6 +233,10 @@ describe("CommonsForm tests", () => {
     fireEvent.click(submitButton);
     await screen.findByText(/Degradation rate must be ≥ 0/i);
 
+    fireEvent.change(screen.getByTestId("CommonsForm-startingDate"), { target: { value: '3000-03-06' } });
+    fireEvent.click(submitButton);
+    await screen.findByText("Cannot select future date.");
+
     fireEvent.change(screen.getByTestId("CommonsForm-carryingCapacity"), { target: { value: "-1" } });
     fireEvent.click(submitButton);
     await screen.findByText(/Carrying Capacity must be ≥ 1/i);
