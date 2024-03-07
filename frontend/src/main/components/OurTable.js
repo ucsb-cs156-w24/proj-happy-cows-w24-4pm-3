@@ -1,79 +1,123 @@
-import React from "react";
-import { useTable, useSortBy } from 'react-table'
+import React, { useState } from "react";
+import { useTable, useSortBy, usePagination } from 'react-table';
 import { Table, Button } from "react-bootstrap";
 import Plaintext from "main/components/Utils/Plaintext";
-// Stryker disable all
+
+
 var tableStyle = {
   "background": "white",
-  // "display": "block" ,
-  "display": "table" ,
-  "maxWidth": "100%" ,
-  "margin": "0 auto" ,
-  "overflowX": "auto" ,
+
+  "display": "block",
+  "maxWidth": "-moz-fit-content",
+  "margin": "0 auto",
+  "overflowX": "auto",
   "whiteSpace": "nowrap"
 };
-// Stryker restore all
-export default function OurTable({ columns, data, testid = "testid", ...rest }) {
 
+export default function OurTable({ columns, data, testid = "testid", pageSize = 5, ...rest }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const gonextPage = () => {
+    nextPage()
+    setCurrentPage(currentPage+1);
+  }
+  const gopreviousPage = () => {
+    previousPage()
+    setCurrentPage(currentPage-1);
+  }
+  const gotoLastPage = (pageCount) => {
+    gotoPage(pageCount)
+    setCurrentPage(pageCount+1);
+  }
+  const gotoFirstPage = () => {
+    gotoPage(0)
+    setCurrentPage(1)
+  }
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
     prepareRow,
   } = useTable({
     columns,
     data,
-    ...(rest.initialState && {
-      initialState: rest.initialState
-    })
-  }, useSortBy)
+    initialState: { pageSize },
+    ...rest
+  }, useSortBy, usePagination)
 
   return (
-    <Table style={tableStyle} {...getTableProps()} striped bordered hover >
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                data-testid={`${testid}-header-${column.id}`}
-              >
-                {column.render('Header')}
-                <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
-                  {column.isSorted
-                    ? column.isSortedDesc
-                      ? ' 🔽'
-                      : ' 🔼'
-                    : ''}
-                </span>
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell, _index) => {
-                return (
+    <>
+      <Table style={tableStyle} {...getTableProps()} striped bordered hover>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  data-testid={`${testid}-header-${column.id}`}
+                >
+                  {column.render('Header')}
+                  <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(row => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell, _index) => (
                   <td
                     {...cell.getCellProps()}
                     data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
                   >
                     {cell.render('Cell')}
                   </td>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
-    </Table>
+                ))}
+              </tr>
+            )
+          })}
+        </tbody>
+      </Table>
+      {/* Pagination UI */}
+      <div className="pagination">
+        <button onClick={() => gotoFirstPage()} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>
+        <button onClick={() => gopreviousPage()} disabled={!canPreviousPage}>
+          {'<'}
+        </button>
+        <button onClick={() => gonextPage()} disabled={!canNextPage}>
+          {'>'}
+        </button>
+        <button onClick={() => gotoLastPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>
+        <span>
+          <strong data-testid={`testId-pagination`}>
+            {currentPage} of {pageOptions.length}
+          </strong>
+        </span>
+      </div>
+    </>
   )
 }
+
 
 // The callback function for ButtonColumn should have the form
 // (cell) => { doSomethingWith(cell); }
