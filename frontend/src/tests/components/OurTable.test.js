@@ -150,10 +150,12 @@ describe("OurTable tests", () => {
         fireEvent.click(firstPageButton);
         expect(screen.getByText('react-table 1')).toBeInTheDocument(); // First item's content
     });
-    test("page index displays correctly for next and prev buttons", () => {
+    test("page index displays correctly for all buttons", () => {
         render(<OurTable columns={columns} data={twentyRows} pageSize={5} />);
         const nextPageButton = screen.getByText('>');
         const prevPageButton = screen.getByText('<');
+        const firstPageButton = screen.getByText('<<');
+        const lastPageButton = screen.getByText('>>');
         expect(screen.getByTestId("testId-pagination")).toHaveTextContent('1 of 4')
         // next page
         fireEvent.click(nextPageButton);
@@ -168,6 +170,12 @@ describe("OurTable tests", () => {
         fireEvent.click(prevPageButton);
         expect(screen.getByTestId("testId-pagination")).toHaveTextContent('2 of 4')
         fireEvent.click(prevPageButton);
+        expect(screen.getByTestId("testId-pagination")).toHaveTextContent('1 of 4')
+        // last page
+        fireEvent.click(lastPageButton);
+        expect(screen.getByTestId("testId-pagination")).toHaveTextContent('4 of 4')
+        // first page
+        fireEvent.click(firstPageButton);
         expect(screen.getByTestId("testId-pagination")).toHaveTextContent('1 of 4')
     });
 
