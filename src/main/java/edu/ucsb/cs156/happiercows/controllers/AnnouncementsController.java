@@ -1,8 +1,8 @@
 package edu.ucsb.cs156.happiercows.controllers;
 
-import edu.ucsb.cs156.happiercows.entities.Announcement;
+import edu.ucsb.cs156.happiercows.entities.Announcements;
 import edu.ucsb.cs156.happiercows.entities.Commons;
-import edu.ucsb.cs156.happiercows.repositories.AnnouncementRepository;
+import edu.ucsb.cs156.happiercows.repositories.AnnouncementsRepository;
 import edu.ucsb.cs156.happiercows.repositories.CommonsRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,10 +34,10 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/announcements")
 @RestController
 @Slf4j
-public class AnnouncementController extends ApiController {
+public class AnnouncementsController extends ApiController {
 
     @Autowired
-    AnnouncementRepository announcementRepository;
+    AnnouncementsRepository announcementsRepository;
 
     @Autowired
     CommonsRepository commonsRepository;
@@ -45,7 +45,7 @@ public class AnnouncementController extends ApiController {
     @Operation(summary = "Create a new announcement")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/post")
-    public Announcement createAnnouncement(
+    public Announcements createAnnouncements(
             @Parameter(name="commonsId") @RequestParam Long commonsId,
             @Parameter(name="start",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @Parameter(name="end",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
@@ -53,13 +53,13 @@ public class AnnouncementController extends ApiController {
             ) 
             throws JsonProcessingException {
 
-        var builder = Announcement.builder()
+        var builder = Announcements.builder()
                 .commonsId(commonsId)
                 .start(start)
                 .end(end)
                 .announcement(announcement);
         
-        Announcement announcements = builder.build();
+        Announcements announcements = builder.build();
 
         // Commons exists
         Commons commons = commonsRepository.findById(commonsId)
@@ -76,43 +76,43 @@ public class AnnouncementController extends ApiController {
         }
 
         // Save announcement
-        return announcementRepository.save(announcements);
+        return announcementsRepository.save(announcements);
     }
 
     @Operation(summary = "Get announcement by id")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/id")
-    public Announcement getAnnouncementById(@Parameter(name="id") @RequestParam Long id) throws JsonProcessingException {
-        Announcement announcement = announcementRepository.findById(id)
+    public Announcements getAnnouncementById(@Parameter(name="id") @RequestParam Long id) throws JsonProcessingException {
+        Announcements announcement = announcementsRepository.findById(id)
             .orElseThrow(
-                () -> new EntityNotFoundException(Announcement.class, id));
+                () -> new EntityNotFoundException(Announcements.class, id));
         return announcement;
     } 
 
     @Operation(summary = "Get announcement by commons")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/commons")
-    public Iterable<Announcement> getAnnouncementByCommons(@Parameter(name="commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
+    public Iterable<Announcements> getAnnouncementsByCommons(@Parameter(name="commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
         // Commons exists
         Commons commons = commonsRepository.findById(commonsId)
             .orElseThrow(() -> new EntityNotFoundException(Commons.class, commonsId));
         
-        return announcementRepository.findByCommonsId(commonsId);
+        return announcementsRepository.findByCommonsId(commonsId);
     } 
 
     @Operation(summary = "Delete an announcement")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("")
-    public Object deleteAnnouncement(
+    public Object deleteAnnouncements(
         @Parameter(description = "The id of the announcement") @RequestParam Long id) {
 
         // Get the announcement
-        Announcement announcement = announcementRepository.findById(id)
+        Announcements announcement = announcementsRepository.findById(id)
             .orElseThrow(
-                () -> new EntityNotFoundException(Announcement.class, id));
+                () -> new EntityNotFoundException(Announcements.class, id));
 
         // Delete the announcement
-        announcementRepository.delete(announcement);
+        announcementsRepository.delete(announcement);
         String responseString = String.format("announcement with id %d deleted", id);
         return genericMessage(responseString);
     }
@@ -121,9 +121,9 @@ public class AnnouncementController extends ApiController {
     @Operation(summary = "Update an announcement")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("")
-    public Announcement updateAnnouncement(
+    public Announcements updateAnnouncements(
             @Parameter(name="id") @RequestParam Long id,
-            @RequestBody @Valid Announcement incoming
+            @RequestBody @Valid Announcements incoming
             ) 
             throws JsonProcessingException {
         
@@ -133,9 +133,9 @@ public class AnnouncementController extends ApiController {
         String announcement = incoming.getAnnouncement();
         
         // Get the announcement
-        Announcement announcements = announcementRepository.findById(id)
+        Announcements announcements = announcementsRepository.findById(id)
             .orElseThrow(
-                () -> new EntityNotFoundException(Announcement.class, id));
+                () -> new EntityNotFoundException(Announcements.class, id));
 
         // Commons exists
         Commons commons = commonsRepository.findById(commonsId)
@@ -158,7 +158,7 @@ public class AnnouncementController extends ApiController {
         announcements.setAnnouncement(announcement);
 
         // Save announcement
-        announcementRepository.save(announcements);
+        announcementsRepository.save(announcements);
         return announcements;
     }
     

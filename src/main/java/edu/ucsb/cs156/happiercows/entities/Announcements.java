@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "announcement")
-public class Announcement {
+@Entity(name = "announcements")
+public class Announcements {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
