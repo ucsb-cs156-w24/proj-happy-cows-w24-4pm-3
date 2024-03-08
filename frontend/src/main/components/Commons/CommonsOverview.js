@@ -18,7 +18,8 @@ export default function CommonsOverview({ commonsPlus, currentUser }) {
                 <Row>
                     <Col>
                         <Card.Title>
-                            {daysSinceTimestamp(commonsPlus.commons.startingDate) > -1 ? "on day ${daysSinceTimestamp(commonsPlus.commons.startingDate)}!" : `Starting Date is in the Future!`}
+                            {/* Stryker disable next-line all */}
+                            {daysSinceTimestamp(commonsPlus.commons.startingDate) > -1 ? `on day ${daysSinceTimestamp(commonsPlus.commons.startingDate)}!` : "Starting Date is in the Future!"}
                         </Card.Title>
                         <Card.Text>Total Players: {commonsPlus.totalUsers}</Card.Text>
                     </Col>

@@ -10,7 +10,7 @@ const daysSinceTimestamp = (date) => {
     var today = new Date();
     var startingDate = new Date(date);
     var timeDiff = today.getTime() - startingDate.getTime();
-    if( timeDiff < 1 ) { 
+    if( timeDiff < 0 ) { 
         return -1;
     }
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
