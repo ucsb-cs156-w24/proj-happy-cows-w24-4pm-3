@@ -21,7 +21,7 @@ public class Announcements {
     private long id;
 
     private long commonsId;
-    private LocalDateTime start = LocalDateTime.now();
-    private LocalDateTime end;
+    private LocalDateTime startTime = LocalDateTime.now();
+    private LocalDateTime endTime;
     private String announcement;
 }

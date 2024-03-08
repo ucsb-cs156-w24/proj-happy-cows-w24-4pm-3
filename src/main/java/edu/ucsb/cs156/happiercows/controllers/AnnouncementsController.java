@@ -47,16 +47,16 @@ public class AnnouncementsController extends ApiController {
     @PostMapping("/post")
     public Announcements createAnnouncements(
             @Parameter(name="commonsId") @RequestParam Long commonsId,
-            @Parameter(name="start",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @Parameter(name="end",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @Parameter(name="startTime",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @Parameter(name="endTime",description="in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam(value = "endTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
             @Parameter(name="announcement") @RequestParam String announcement
             ) 
             throws JsonProcessingException {
 
         var builder = Announcements.builder()
                 .commonsId(commonsId)
-                .start(start)
-                .end(end)
+                .startTime(startTime)
+                .endTime(endTime)
                 .announcement(announcement);
         
         Announcements announcements = builder.build();
@@ -66,7 +66,7 @@ public class AnnouncementsController extends ApiController {
             .orElseThrow(() -> new EntityNotFoundException(Commons.class, commonsId));
 
         // End is after Start
-        if (end != null && end.isBefore(start)) {
+        if (endTime != null && endTime.isBefore(startTime)) {
             throw new IllegalArgumentException("End cannot be before start");
         }
         
@@ -128,8 +128,8 @@ public class AnnouncementsController extends ApiController {
             throws JsonProcessingException {
         
         Long commonsId = incoming.getCommonsId();
-        LocalDateTime start = incoming.getStart();
-        LocalDateTime end = incoming.getEnd();
+        LocalDateTime startTime = incoming.getStartTime();
+        LocalDateTime endTime = incoming.getEndTime();
         String announcement = incoming.getAnnouncement();
         
         // Get the announcement
@@ -142,7 +142,7 @@ public class AnnouncementsController extends ApiController {
             .orElseThrow(() -> new EntityNotFoundException(Commons.class, commonsId));
 
         // End is after Start
-        if (end != null && end.isBefore(start)) {
+        if (endTime != null && endTime.isBefore(startTime)) {
             throw new IllegalArgumentException("End cannot be before start");
         }
         
@@ -153,8 +153,8 @@ public class AnnouncementsController extends ApiController {
 
         // Update
         announcements.setCommonsId(commonsId);
-        announcements.setStart(start);
-        announcements.setEnd(end);
+        announcements.setStartTime(startTime);
+        announcements.setEndTime(endTime);
         announcements.setAnnouncement(announcement);
 
         // Save announcement

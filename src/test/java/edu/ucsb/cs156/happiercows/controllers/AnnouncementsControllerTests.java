@@ -60,8 +60,8 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
 
     long id = 1;
     long commonsId = commons.getId();
-    LocalDateTime start = LocalDateTime.parse("2022-01-03T00:00:00");
-    LocalDateTime end = LocalDateTime.parse("2023-01-03T00:00:00");
+    LocalDateTime startTime = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime endTime = LocalDateTime.parse("2023-01-03T00:00:00");
     String message = "test";
 
     @WithMockUser(roles = { "USER" })
@@ -76,12 +76,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     public void admin_can_post() throws Exception {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(start).end(end).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
 
         when(announcementsRepository.save(any(Announcements.class))).thenReturn(announcement);
 
         //act 
-        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={start}&end={end}&announcement={message}", commonsId, start, end, message).with(csrf()))
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&startTime={startTime}&endTime={endTime}&announcement={message}", commonsId, startTime, endTime, message).with(csrf()))
             .andExpect(status().isOk()).andReturn();
 
         // assert
@@ -96,12 +96,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     public void admin_can_post_without_end() throws Exception {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(start).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(startTime).announcement(message).build();
 
         when(announcementsRepository.save(any(Announcements.class))).thenReturn(announcement);
 
         //act 
-        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={start}&announcement={message}", commonsId, start, message).with(csrf()))
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&startTime={startTime}&announcement={message}", commonsId, startTime, message).with(csrf()))
             .andExpect(status().isOk()).andReturn();
 
         // assert
@@ -116,12 +116,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     public void end_cannot_be_before_start() throws Exception {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(end).end(start).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(endTime).endTime(startTime).announcement(message).build();
 
         when(announcementsRepository.save(any(Announcements.class))).thenReturn(announcement);
 
         //act 
-        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={end}&end={start}&announcement={message}", commonsId, end, start, message).with(csrf()))
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&startTime={endTime}&endTime={startTime}&announcement={message}", commonsId, endTime, startTime, message).with(csrf()))
             .andExpect(status().isBadRequest()).andReturn();
 
         // assert
@@ -134,12 +134,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     public void announcement_cannot_be_empty() throws Exception {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(end).end(start).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
 
         when(announcementsRepository.save(any(Announcements.class))).thenReturn(announcement);
 
         //act 
-        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={start}&end={end}&announcement={message}", commonsId, start, end, "").with(csrf()))
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&startTime={startTime}&endTime={endTime}&announcement={message}", commonsId, startTime, endTime, "").with(csrf()))
             .andExpect(status().isBadRequest()).andReturn();
 
         // assert
@@ -152,7 +152,7 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     public void commons_not_found_in_post() throws Exception {
 
         // act
-        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={start}&end={end}&announcement={message}", 2, start, end, message)
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&startTime={startTime}&endTime={endTime}&announcement={message}", 2, startTime, endTime, message)
                         .with(csrf()))
                 .andExpect(status().is(404)).andReturn();
 
@@ -187,7 +187,7 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
         List<Announcements> expected = new ArrayList<Announcements>();
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(end).end(start).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
         expected.add(announcement);
         expected.add(announcement);
         when(announcementsRepository.findByCommonsId(commonsId)).thenReturn(expected);
@@ -224,7 +224,7 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @WithMockUser(roles = {"USER"})
     @Test
     public void successful_get_by_announcement_id() throws Exception {
-        Announcements announcement = Announcements.builder().commonsId(commonsId).start(end).end(start).announcement(message).build();
+        Announcements announcement = Announcements.builder().commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
 
         //act 
@@ -242,12 +242,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void admin_can_put() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
-        LocalDateTime end2 = LocalDateTime.parse("2025-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime endTime2 = LocalDateTime.parse("2025-01-03T00:00:00");
         String message2 = "testtest";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).endTime(endTime2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
@@ -275,11 +275,11 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void admin_can_put_without_end() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
         String message2 = "testtest";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
@@ -307,12 +307,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void end_cannot_be_before_start_in_put() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2025-01-03T00:00:00");
-        LocalDateTime end2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2025-01-03T00:00:00");
+        LocalDateTime endTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
         String message2 = "testtest";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).endTime(endTime2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
@@ -337,12 +337,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void announcement_cannot_be_empty_in_put() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
-        LocalDateTime end2 = LocalDateTime.parse("2025-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime endTime2 = LocalDateTime.parse("2025-01-03T00:00:00");
         String message2 = "";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).endTime(endTime2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
@@ -367,12 +367,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void commons_not_found_in_put() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
-        LocalDateTime end2 = LocalDateTime.parse("2025-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime endTime2 = LocalDateTime.parse("2025-01-03T00:00:00");
         String message2 = "";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).endTime(endTime2).announcement(message2).build();
 
         //when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
@@ -400,12 +400,12 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @Test
     public void announcement_not_found_in_put() throws Exception {
         long commonsId2 = 2;
-        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
-        LocalDateTime end2 = LocalDateTime.parse("2025-01-03T00:00:00");
+        LocalDateTime startTime2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        LocalDateTime endTime2 = LocalDateTime.parse("2025-01-03T00:00:00");
         String message2 = "";
 
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
-        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
+        Announcements announcement2 = Announcements.builder().id(id).commonsId(commonsId2).startTime(startTime2).endTime(endTime2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
 
@@ -431,7 +431,7 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @WithMockUser(roles = {"ADMIN"})
     @Test
     public void successful_delete() throws Exception {
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcement));
 
         // act 
@@ -448,7 +448,7 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
     @WithMockUser(roles = {"ADMIN"})
     @Test
     public void announcement_with_id_not_found_in_delete() throws Exception {
-        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
+        Announcements announcement = Announcements.builder().id(id).commonsId(commonsId).startTime(startTime).endTime(endTime).announcement(message).build();
 
         // act 
         MvcResult response = mockMvc.perform(delete("/api/announcements?id={id}", id).with(csrf()))
