@@ -66,12 +66,12 @@ import java.time.LocalDateTime;
 <span class="fc" id="L66">            .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, commonsId));</span>
 
         // End is after Start
-<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        if (end != null &amp;&amp; end.isBefore(start)) {</span>
+<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (end != null &amp;&amp; end.isBefore(start)) {</span>
 <span class="fc" id="L70">            throw new IllegalArgumentException(&quot;End cannot be before start&quot;);</span>
         }
         
         // Announcement is not empty
-<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if (announcement == null || announcement.isEmpty()) {</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (announcement.isEmpty()) {</span>
 <span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Announcement cannot be empty&quot;);</span>
         }
 
@@ -121,7 +121,7 @@ import java.time.LocalDateTime;
     @Operation(summary = &quot;Update an announcement&quot;)
     @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN')&quot;)
     @PutMapping(&quot;&quot;)
-    public Announcement updateAnnouncements(
+    public Announcement updateAnnouncement(
             @Parameter(name=&quot;id&quot;) @RequestParam Long id,
             @RequestBody @Valid Announcement incoming
             ) 
@@ -142,12 +142,12 @@ import java.time.LocalDateTime;
 <span class="fc" id="L142">            .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, commonsId));</span>
 
         // End is after Start
-<span class="pc bpc" id="L145" title="1 of 4 branches missed.">        if (end != null &amp;&amp; end.isBefore(start)) {</span>
+<span class="fc bfc" id="L145" title="All 4 branches covered.">        if (end != null &amp;&amp; end.isBefore(start)) {</span>
 <span class="fc" id="L146">            throw new IllegalArgumentException(&quot;End cannot be before start&quot;);</span>
         }
         
         // Announcement is not empty
-<span class="pc bpc" id="L150" title="1 of 4 branches missed.">        if (announcement == null || announcement.isEmpty()) {</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (announcement.isEmpty()) {</span>
 <span class="fc" id="L151">            throw new IllegalArgumentException(&quot;Announcement cannot be empty&quot;);</span>
         }
 
