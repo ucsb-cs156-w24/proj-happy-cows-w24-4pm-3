@@ -93,6 +93,26 @@ public class AnnouncementControllerTests extends ControllerTestCase {
 
     @WithMockUser(roles = {"ADMIN"})
     @Test
+    public void admin_can_post_without_end() throws Exception {
+        when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
+
+        Announcement announcement = Announcement.builder().commonsId(commonsId).start(start).announcement(message).build();
+
+        when(announcementRepository.save(any(Announcement.class))).thenReturn(announcement);
+
+        //act 
+        MvcResult response = mockMvc.perform(post("/api/announcements/post?commonsId={commonsId}&start={start}&announcement={message}", commonsId, start, message).with(csrf()))
+            .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(announcementRepository, times(1)).save(any(Announcement.class));
+        String responseString = response.getResponse().getContentAsString();
+        String expectedJson = mapper.writeValueAsString(announcement);
+        assertEquals(expectedJson, responseString);
+    }
+
+    @WithMockUser(roles = {"ADMIN"})
+    @Test
     public void end_cannot_be_before_start() throws Exception {
         when(commonsRepository.findById(commonsId)).thenReturn(Optional.of(commons));
 
@@ -228,6 +248,38 @@ public class AnnouncementControllerTests extends ControllerTestCase {
 
         Announcement announcement = Announcement.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
         Announcement announcement2 = Announcement.builder().id(id).commonsId(commonsId2).start(start2).end(end2).announcement(message2).build();
+
+        when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
+        when(announcementRepository.findById(id)).thenReturn(Optional.of(announcement));
+
+        String requestBody = mapper.writeValueAsString(announcement2);
+
+        // act 
+        MvcResult response = mockMvc.perform(
+            put("/api/announcements?id={id}",id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(requestBody)
+                .with(csrf()))
+            .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(announcementRepository, times(1)).findById(id);
+        verify(commonsRepository, times(1)).findById(commonsId2);
+        verify(announcementRepository, times(1)).save(announcement2);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(requestBody, responseString);
+    }
+
+    @WithMockUser(roles = {"ADMIN"})
+    @Test
+    public void admin_can_put_without_end() throws Exception {
+        long commonsId2 = 2;
+        LocalDateTime start2 = LocalDateTime.parse("2024-01-03T00:00:00");
+        String message2 = "testtest";
+
+        Announcement announcement = Announcement.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(message).build();
+        Announcement announcement2 = Announcement.builder().id(id).commonsId(commonsId2).start(start2).announcement(message2).build();
 
         when(commonsRepository.findById(commonsId2)).thenReturn(Optional.of(commons));
         when(announcementRepository.findById(id)).thenReturn(Optional.of(announcement));

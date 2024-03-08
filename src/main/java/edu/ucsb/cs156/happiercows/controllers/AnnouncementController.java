@@ -71,7 +71,7 @@ public class AnnouncementController extends ApiController {
         }
         
         // Announcement is not empty
-        if (announcement == null || announcement.isEmpty()) {
+        if (announcement.isEmpty()) {
             throw new IllegalArgumentException("Announcement cannot be empty");
         }
 
@@ -121,7 +121,7 @@ public class AnnouncementController extends ApiController {
     @Operation(summary = "Update an announcement")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("")
-    public Announcement updateAnnouncements(
+    public Announcement updateAnnouncement(
             @Parameter(name="id") @RequestParam Long id,
             @RequestBody @Valid Announcement incoming
             ) 
@@ -147,7 +147,7 @@ public class AnnouncementController extends ApiController {
         }
         
         // Announcement is not empty
-        if (announcement == null || announcement.isEmpty()) {
+        if (announcement.isEmpty()) {
             throw new IllegalArgumentException("Announcement cannot be empty");
         }
 
