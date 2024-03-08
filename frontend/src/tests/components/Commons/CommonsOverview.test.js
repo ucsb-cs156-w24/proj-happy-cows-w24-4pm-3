@@ -86,31 +86,29 @@ describe("CommonsOverview tests", () => {
         expect(() => screen.getByTestId("user-leaderboard-button")).toThrow();
     });
 
-    test("Future start date should not show Days:", async () => {
-        const ourCommons = {
-            ...commonsFixtures.specialCommons,
-        };
-        const ourCommonsPlus = {
-            ...commonsPlusFixtures.specialCommonsPlus,
-            commons : ourCommons
-        }
-        apiCurrentUserFixtures.userOnly.user.commonsPlus = commonsPlusFixtures.specialCommonsPlus[0];
-        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-        axiosMock.onGet("/api/commons/plus", {params: {id:48}}).reply(200, ourCommonsPlus);
-        axiosMock.onGet("/api/leaderboard/all").reply(200, leaderboardFixtures.threeUserCommonsLB);
+    test("days showing when startdate is in the future.", async () => {
         render(
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <PlayPage />
-                </MemoryRouter>
-            </QueryClientProvider>
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsPlus[0]} />
         );
-        await waitFor(() => {
-            expect(axiosMock.history.get.length).toEqual(3);
-        });
+        expect(screen.getByText("Starting Date is in the Future!")).toBeInTheDocument();
+    });
 
-        await screen.findByText(/Starting Date is in the Future!/i);
-        
+    test("error message when start date is in the future.", async () => {
+        render(
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsSpecialPlus[0]} />
+        );
 
+        expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
+        expect(screen.queryByText("Starting Date is in the Future!")).not.toBeInTheDocument();
+    });
+
+    test("no error message when start date same.", async () => {
+        render(
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsSpecialSameDayPlus[0]} />
+        );
+
+        expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
+        expect(screen.queryByText("Starting Date is in the Future!")).not.toBeInTheDocument();
     });
 });
+

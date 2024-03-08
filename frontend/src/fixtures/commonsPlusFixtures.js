@@ -7,7 +7,7 @@ const commonsPlusFixtures = {
                 "cowPrice": 1.0,
                 "milkPrice": 1.0,
                 "startingBalance": 10.0,
-                "startingDate": "2022-11-22T21:23:45",
+                "startingDate": "2022-03-08M21:23:45",
                 "lastDate": "2022-11-22T21:23:45",
                 "endingDate": null,
                 "degradationRate": 0.01,
@@ -70,7 +70,7 @@ const commonsPlusFixtures = {
                 "cowPrice": 10.0,
                 "milkPrice": 1.0,
                 "startingBalance": 100.0,
-                "startingDate": "2022-11-11T00:00:00",
+                "startingDate": "2032-11-11T00:00:00",
                 "lastDate": "2022-11-11T00:00:00",
                 "endingDate": null,
                 "degradationRate": 3.0,
@@ -83,25 +83,48 @@ const commonsPlusFixtures = {
             "effectiveCapacity": 23
         }
     ],
-    specialCommonsPlus:
-    [
+    oneCommonsSpecialPlus: [
         {
-            "id": 48,
-            "name": "Laya's Commons",
-            "day": 5,
-            "startingDate": "2030-03-05T15:50:10",
-            "lastDate": "2040-03-05T15:50:10",
-            "startingBalance": 2000.50,
-            "totalPlayers": 50,
-            "cowPrice": 15,
-            "milkPrice": 10,
-            "degradationRate": .5,
-            "showLeaderboard": true,
-            "capacityPerUser": 5,
-            "carryingCapacity": 314,
-            "effectiveCapacity": 314,
-            "belowCapacityHealthUpdateStrategy": "Constant",
-            "aboveCapacityHealthUpdateStrategy": "Linear"
+            "commons":
+            {
+                "id": 10,
+                "name": "Test",
+                "cowPrice": 10.0,
+                "milkPrice": 1.0,
+                "startingBalance": 100.0,
+                "startingDate": "2023-11-11T00:00:00",
+                "lastDate": "2022-11-11T00:00:00",
+                "endingDate": null,
+                "degradationRate": 3.0,
+                "showLeaderboard": false,
+                "capacityPerUser": 1,
+                "carryingCapacity": 23,
+            },
+            "totalCows": 0,
+            "totalUsers": 0,
+            "effectiveCapacity": 23
+        }
+    ],
+    oneCommonsSpecialSameDayPlus: [
+        {
+            "commons":
+            {
+                "id": 12,
+                "name": "Test",
+                "cowPrice": 10.0,
+                "milkPrice": 1.0,
+                "startingBalance": 100.0,
+                "startingDate": "2024-03-07T00:00:00",
+                "lastDate": "2022-11-11T00:00:00",
+                "endingDate": null,
+                "degradationRate": 3.0,
+                "showLeaderboard": false,
+                "capacityPerUser": 1,
+                "carryingCapacity": 23,
+            },
+            "totalCows": 0,
+            "totalUsers": 0,
+            "effectiveCapacity": 23
         }
     ],
 }

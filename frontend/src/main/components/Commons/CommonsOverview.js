@@ -10,6 +10,7 @@ export default function CommonsOverview({ commonsPlus, currentUser }) {
     // Stryker disable next-line all
     const leaderboardButtonClick = () => { navigate("/leaderboard/" + commonsPlus.commons.id) };
     const showLeaderboard = (hasRole(currentUser, "ROLE_ADMIN") || commonsPlus.commons.showLeaderboard );
+
     return (
         <Card data-testid="CommonsOverview">
             <Card.Header as="h5">Announcements</Card.Header>
@@ -17,7 +18,7 @@ export default function CommonsOverview({ commonsPlus, currentUser }) {
                 <Row>
                     <Col>
                         <Card.Title>
-                            {daysSinceTimestamp(commonsPlus.commons.startingDate) >= 0 ? `day ${daysSinceTimestamp(commonsPlus.commons.startingDate)}!` : "Starting Date is in the Future!"}
+                            {daysSinceTimestamp(commonsPlus.commons.startingDate) > -1 ? "on day ${daysSinceTimestamp(commonsPlus.commons.startingDate)}!" : `Starting Date is in the Future!`}
                         </Card.Title>
                         <Card.Text>Total Players: {commonsPlus.totalUsers}</Card.Text>
                     </Col>
