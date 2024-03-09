@@ -3,7 +3,7 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Table, Button } from "react-bootstrap";
 import Plaintext from "main/components/Utils/Plaintext";
 
-
+// Stryker disable all
 var tableStyle = {
   "background": "white",
 
@@ -13,6 +13,8 @@ var tableStyle = {
   "overflowX": "auto",
   "whiteSpace": "nowrap"
 };
+
+// Stryker restore all
 
 export default function OurTable({ columns, data, testid = "testid", pageSize = 5, ...rest }) {
   const [currentPage, setCurrentPage] = useState(1);
