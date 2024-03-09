@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnnouncementsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">happycows</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.happiercows.controllers</a> &gt; <span class="el_source">AnnouncementsController.java</span></div><h1>AnnouncementsController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.happiercows.controllers;
+
+import edu.ucsb.cs156.happiercows.entities.Announcements;
+import edu.ucsb.cs156.happiercows.entities.Commons;
+import edu.ucsb.cs156.happiercows.repositories.AnnouncementsRepository;
+import edu.ucsb.cs156.happiercows.repositories.CommonsRepository;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
+
+import javax.validation.Valid;
+
+import java.time.LocalDateTime;
+
+@Tag(name = &quot;Announcements&quot;)
+@RequestMapping(&quot;/api/announcements&quot;)
+@RestController
+<span class="fc" id="L36">@Slf4j</span>
+<span class="fc" id="L37">public class AnnouncementsController extends ApiController {</span>
+
+    @Autowired
+    AnnouncementsRepository announcementsRepository;
+
+    @Autowired
+    CommonsRepository commonsRepository;
+
+    @Operation(summary = &quot;Create a new announcement&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    @PostMapping(&quot;/post&quot;)
+    public Announcements createAnnouncements(
+            @Parameter(name=&quot;commonsId&quot;) @RequestParam Long commonsId,
+            @Parameter(name=&quot;startTime&quot;,description=&quot;in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;startTime&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @Parameter(name=&quot;endTime&quot;,description=&quot;in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(value = &quot;endTime&quot;, required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+            @Parameter(name=&quot;announcement&quot;) @RequestParam String announcement
+            ) 
+            throws JsonProcessingException {
+
+<span class="fc" id="L56">        var builder = Announcements.builder()</span>
+<span class="fc" id="L57">                .commonsId(commonsId)</span>
+<span class="fc" id="L58">                .startTime(startTime)</span>
+<span class="fc" id="L59">                .endTime(endTime)</span>
+<span class="fc" id="L60">                .announcement(announcement);</span>
+        
+<span class="fc" id="L62">        Announcements announcements = builder.build();</span>
+
+        // Commons exists
+<span class="fc" id="L65">        Commons commons = commonsRepository.findById(commonsId)</span>
+<span class="fc" id="L66">            .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, commonsId));</span>
+
+        // End is after Start
+<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (endTime != null &amp;&amp; endTime.isBefore(startTime)) {</span>
+<span class="fc" id="L70">            throw new IllegalArgumentException(&quot;End cannot be before start&quot;);</span>
+        }
+        
+        // Announcement is not empty
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (announcement.isEmpty()) {</span>
+<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Announcement cannot be empty&quot;);</span>
+        }
+
+        // Save announcement
+<span class="fc" id="L79">        return announcementsRepository.save(announcements);</span>
+    }
+
+    @Operation(summary = &quot;Get announcement by id&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;/id&quot;)
+    public Announcements getAnnouncementById(@Parameter(name=&quot;id&quot;) @RequestParam Long id) throws JsonProcessingException {
+<span class="fc" id="L86">        Announcements announcement = announcementsRepository.findById(id)</span>
+<span class="fc" id="L87">            .orElseThrow(</span>
+<span class="fc" id="L88">                () -&gt; new EntityNotFoundException(Announcements.class, id));</span>
+<span class="fc" id="L89">        return announcement;</span>
+    } 
+
+    @Operation(summary = &quot;Get announcement by commons&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;/commons&quot;)
+    public Iterable&lt;Announcements&gt; getAnnouncementsByCommons(@Parameter(name=&quot;commonsId&quot;) @RequestParam Long commonsId) throws JsonProcessingException {
+        // Commons exists
+<span class="fc" id="L97">        Commons commons = commonsRepository.findById(commonsId)</span>
+<span class="fc" id="L98">            .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, commonsId));</span>
+        
+<span class="fc" id="L100">        return announcementsRepository.findByCommonsId(commonsId);</span>
+    } 
+
+    @Operation(summary = &quot;Delete an announcement&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteAnnouncements(
+        @Parameter(description = &quot;The id of the announcement&quot;) @RequestParam Long id) {
+
+        // Get the announcement
+<span class="fc" id="L110">        Announcements announcement = announcementsRepository.findById(id)</span>
+<span class="fc" id="L111">            .orElseThrow(</span>
+<span class="fc" id="L112">                () -&gt; new EntityNotFoundException(Announcements.class, id));</span>
+
+        // Delete the announcement
+<span class="fc" id="L115">        announcementsRepository.delete(announcement);</span>
+<span class="fc" id="L116">        String responseString = String.format(&quot;announcement with id %d deleted&quot;, id);</span>
+<span class="fc" id="L117">        return genericMessage(responseString);</span>
+    }
+
+
+    @Operation(summary = &quot;Update an announcement&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public Announcements updateAnnouncements(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid Announcements incoming
+            ) 
+            throws JsonProcessingException {
+        
+<span class="fc" id="L130">        Long commonsId = incoming.getCommonsId();</span>
+<span class="fc" id="L131">        LocalDateTime startTime = incoming.getStartTime();</span>
+<span class="fc" id="L132">        LocalDateTime endTime = incoming.getEndTime();</span>
+<span class="fc" id="L133">        String announcement = incoming.getAnnouncement();</span>
+        
+        // Get the announcement
+<span class="fc" id="L136">        Announcements announcements = announcementsRepository.findById(id)</span>
+<span class="fc" id="L137">            .orElseThrow(</span>
+<span class="fc" id="L138">                () -&gt; new EntityNotFoundException(Announcements.class, id));</span>
+
+        // Commons exists
+<span class="fc" id="L141">        Commons commons = commonsRepository.findById(commonsId)</span>
+<span class="fc" id="L142">            .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, commonsId));</span>
+
+        // End is after Start
+<span class="fc bfc" id="L145" title="All 4 branches covered.">        if (endTime != null &amp;&amp; endTime.isBefore(startTime)) {</span>
+<span class="fc" id="L146">            throw new IllegalArgumentException(&quot;End cannot be before start&quot;);</span>
+        }
+        
+        // Announcement is not empty
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (announcement.isEmpty()) {</span>
+<span class="fc" id="L151">            throw new IllegalArgumentException(&quot;Announcement cannot be empty&quot;);</span>
+        }
+
+        // Update
+<span class="fc" id="L155">        announcements.setCommonsId(commonsId);</span>
+<span class="fc" id="L156">        announcements.setStartTime(startTime);</span>
+<span class="fc" id="L157">        announcements.setEndTime(endTime);</span>
+<span class="fc" id="L158">        announcements.setAnnouncement(announcement);</span>
+
+        // Save announcement
+<span class="fc" id="L161">        announcementsRepository.save(announcements);</span>
+<span class="fc" id="L162">        return announcements;</span>
+    }
+    
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
