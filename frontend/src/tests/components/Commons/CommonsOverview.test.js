@@ -90,7 +90,7 @@ describe("CommonsOverview tests", () => {
         render(
             <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsPlus[0]} />
         );
-        expect(screen.getByText("Starting Date is in the Future!")).toBeInTheDocument();
+        expect(screen.getByText('Starting Date', {exact: false})).toBeInTheDocument();
     });
 
     test("error message when start date is in the future.", async () => {
@@ -99,7 +99,7 @@ describe("CommonsOverview tests", () => {
         );
 
         expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
-        expect(screen.queryByText("Starting Date is in the Future!")).not.toBeInTheDocument();
+        expect(screen.queryByText('Starting Date', {exact: false})).not.toBeInTheDocument();
     });
 
     test("no error message when start date same.", async () => {
@@ -108,7 +108,7 @@ describe("CommonsOverview tests", () => {
         );
 
         expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
-        expect(screen.queryByText("Starting Date is in the Future!")).not.toBeInTheDocument();
+        expect(screen.queryByText('Starting Date', {exact: false})).not.toBeInTheDocument();
     });
 });
 
