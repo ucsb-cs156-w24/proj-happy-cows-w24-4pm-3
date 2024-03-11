@@ -10,8 +10,9 @@ export default function CommonsOverview({ commonsPlus, currentUser }) {
     // Stryker disable next-line all
     const leaderboardButtonClick = () => { navigate("/leaderboard/" + commonsPlus.commons.id) };
     const showLeaderboard = (hasRole(currentUser, "ROLE_ADMIN") || commonsPlus.commons.showLeaderboard );
-    const start = new Date(commonsPlus.commons.startingDate);
-    const formatDate = start.toISOString().split('T')[0]
+    const date = new Date(commonsPlus.commons.startingDate);
+
+    const formatDate = date.toDateString();
 
     return (
         <Card data-testid="CommonsOverview">

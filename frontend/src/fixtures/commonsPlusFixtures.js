@@ -7,7 +7,7 @@ const commonsPlusFixtures = {
                 "cowPrice": 1.0,
                 "milkPrice": 1.0,
                 "startingBalance": 10.0,
-                "startingDate": "2022-03-08M21:23:45",
+                "startingDate": "2022-03-08T21:23:45",
                 "lastDate": "2022-11-22T21:23:45",
                 "endingDate": null,
                 "degradationRate": 0.01,
