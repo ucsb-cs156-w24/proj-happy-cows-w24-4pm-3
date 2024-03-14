@@ -5,7 +5,6 @@ import Plaintext from "main/components/Utils/Plaintext";
 // Stryker disable all
 var tableStyle = {
   "background": "white",
-  // "display": "block" ,
   "display": "table" ,
   "maxWidth": "100%" ,
   "margin": "0 auto" ,
