@@ -33,6 +33,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -100,6 +101,7 @@ public class CommonsControllerTests extends ControllerTestCase {
     @Test
     public void createCommonsTest() throws Exception {
         LocalDateTime someTime = LocalDateTime.parse("2022-03-05T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2022-06-05T15:50:10"); // fixing lastDate mutation test
 
         Commons commons = Commons.builder()
                 .name("Jackson's Commons")
@@ -107,8 +109,10 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
@@ -121,8 +125,10 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant.name())
@@ -162,6 +168,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -174,6 +181,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -214,6 +222,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -226,6 +235,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -315,6 +325,7 @@ public class CommonsControllerTests extends ControllerTestCase {
     @Test
     public void updateCommonsTest() throws Exception {
         LocalDateTime someTime = LocalDateTime.parse("2022-03-05T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2022-06-05T15:50:10"); //fixing mutation test
 
         CreateCommonsParams parameters = CreateCommonsParams.builder()
                 .name("Jackson's Commons")
@@ -322,8 +333,10 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant.name())
@@ -336,8 +349,10 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
@@ -364,6 +379,8 @@ public class CommonsControllerTests extends ControllerTestCase {
         commons.setDegradationRate(parameters.getDegradationRate());
         parameters.setShowLeaderboard(false);
         commons.setShowLeaderboard(parameters.getShowLeaderboard());
+        parameters.setShowChat(false);
+        commons.setShowChat(parameters.getShowChat());
         parameters.setCapacityPerUser(12);
         commons.setCapacityPerUser(parameters.getCapacityPerUser());
         parameters.setCarryingCapacity(123);
@@ -404,6 +421,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -416,6 +434,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
@@ -458,6 +477,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(8.49)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -470,6 +490,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(8.49)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -528,6 +549,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(8.49)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -540,6 +562,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(8.49)
                 .showLeaderboard(false)
+                .showChat(false)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .build();
@@ -785,6 +808,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -943,6 +967,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -965,6 +990,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
         
@@ -987,6 +1013,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -1009,6 +1036,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(-1.0)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
         
@@ -1031,6 +1059,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(0)
                 .build();
 
@@ -1057,6 +1086,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(0.0)
                 .degradationRate(0.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(1)
                 .build();
 
@@ -1085,6 +1115,7 @@ public class CommonsControllerTests extends ControllerTestCase {
         .startingDate(someTime)
         .degradationRate(50.0)
         .showLeaderboard(false)
+        .showChat(false)
         .carryingCapacity(100)
         .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
         .belowCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Linear)
@@ -1101,6 +1132,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -1123,6 +1155,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -1145,6 +1178,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -1167,6 +1201,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(-1.0)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(100)
                 .build();
 
@@ -1189,6 +1224,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(1020.10)
                 .degradationRate(50.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(0)
                 .build();
 
@@ -1218,6 +1254,7 @@ public class CommonsControllerTests extends ControllerTestCase {
         .startingDate(someTime)
         .degradationRate(50.0)
         .showLeaderboard(false)
+        .showChat(false)
         .carryingCapacity(100)
         .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
         .belowCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Linear)
@@ -1234,6 +1271,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingBalance(0.0)
                 .degradationRate(0.0)
                 .showLeaderboard(false)
+                .showChat(false)
                 .carryingCapacity(1)
                 .build();
 
@@ -1263,6 +1301,7 @@ public class CommonsControllerTests extends ControllerTestCase {
         .startingDate(someTime)
         .degradationRate(50.0)
         .showLeaderboard(false)
+        .showChat(false)
         .capacityPerUser(5)
         .carryingCapacity(10)
         .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
@@ -1286,6 +1325,7 @@ public class CommonsControllerTests extends ControllerTestCase {
         .startingDate(someTime)
         .degradationRate(50.0)
         .showLeaderboard(false)
+        .showChat(false)
         .capacityPerUser(50)
         .carryingCapacity(10)
         .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
