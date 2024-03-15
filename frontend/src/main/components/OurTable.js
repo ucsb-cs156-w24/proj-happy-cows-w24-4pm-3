@@ -6,11 +6,10 @@ import Plaintext from "main/components/Utils/Plaintext";
 // Stryker disable all
 var tableStyle = {
   "background": "white",
-
-  "display": "block",
+  "display": "table" ,
   "maxWidth": "-moz-fit-content",
-  "margin": "0 auto",
-  "overflowX": "auto",
+  "margin": "0 auto" ,
+  "overflowX": "auto" ,
   "whiteSpace": "nowrap"
 };
 
