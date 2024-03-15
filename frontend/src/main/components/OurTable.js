@@ -7,7 +7,7 @@ import Plaintext from "main/components/Utils/Plaintext";
 var tableStyle = {
   "background": "white",
   "display": "table" ,
-  "maxWidth": "100%" ,
+  "maxWidth": "-moz-fit-content",
   "margin": "0 auto" ,
   "overflowX": "auto" ,
   "whiteSpace": "nowrap"
