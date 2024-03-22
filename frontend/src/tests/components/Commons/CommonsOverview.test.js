@@ -82,6 +82,33 @@ describe("CommonsOverview tests", () => {
         await waitFor(() => {
             expect(axiosMock.history.get.length).toEqual(3);
         });
+
         expect(() => screen.getByTestId("user-leaderboard-button")).toThrow();
     });
+
+    test("days showing when startdate is in the future.", async () => {
+        render(
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsPlus[0]} />
+        );
+        expect(screen.getByText('Starting Date', {exact: false})).toBeInTheDocument();
+    });
+
+    test("error message when start date is in the future.", async () => {
+        render(
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsSpecialPlus[0]} />
+        );
+
+        expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
+        expect(screen.queryByText('Starting Date', {exact: false})).not.toBeInTheDocument();
+    });
+
+    test("no error message when start date same.", async () => {
+        render(
+            <CommonsOverview commonsPlus={commonsPlusFixtures.oneCommonsSpecialSameDayPlus[0]} />
+        );
+
+        expect(screen.getByText('on day', {exact: false})).toBeInTheDocument();
+        expect(screen.queryByText('Starting Date', {exact: false})).not.toBeInTheDocument();
+    });
 });
+

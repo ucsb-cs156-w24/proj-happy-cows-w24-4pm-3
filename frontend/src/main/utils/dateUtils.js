@@ -6,10 +6,14 @@ const timestampToDate = (timestamp) => {
     return (date.getFullYear() + "-" + (padWithZero(date.getMonth()+1)) + "-" + padWithZero(date.getDate()));
 }
 
+//stryker 
 const daysSinceTimestamp = (date) => {
     var today = new Date();
     var startingDate = new Date(date);
-    var timeDiff = Math.abs(today.getTime() - startingDate.getTime());
+    var timeDiff = today.getTime() - startingDate.getTime();
+    if( timeDiff < 0 ) { 
+        return -1;
+    }
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
 }
 

@@ -1,5 +1,6 @@
 const commonsFixtures = {
-    threeCommons: [
+    threeCommons: 
+    [
         {
             "id": 5,
             "name": "Seths Common",
@@ -56,7 +57,7 @@ const commonsFixtures = {
         }
     ],
     oneCommons:
-        [
+    [
             {
                 "id": 1,
                 "name": "Anika's Commons",
@@ -75,9 +76,9 @@ const commonsFixtures = {
                 "belowCapacityHealthUpdateStrategy": "Constant",
                 "aboveCapacityHealthUpdateStrategy": "Linear"
             }
-        ],
-
-    sevenCommons: [
+    ],
+    sevenCommons: 
+    [
         {
             "id": 10,
             "name": "Seths Commons",

@@ -1,4 +1,4 @@
-import { padWithZero, timestampToDate, daysSinceTimestamp, formatTime } from "main/utils/dateUtils";
+import { padWithZero, timestampToDate, daysSinceTimestamp, formatTime } from "main/utils/dateUtils"; 
 
 
 describe("dateUtils tests", () => {
@@ -29,6 +29,21 @@ describe("dateUtils tests", () => {
     it("calculates days properly", () => {
       jest.useFakeTimers().setSystemTime(new Date('2022-06-01'));
       expect(daysSinceTimestamp(1653346250816)).toBe(9);
+    });
+  });
+
+  describe("daysSinceTimestamp test future", () => {
+    it("calculates future date", () => {
+      jest.useFakeTimers().setSystemTime(new Date('2022-05-23'));
+      expect(daysSinceTimestamp(1653346250817)).toBe(-1);
+    });
+  });
+
+  describe("daysSinceTimestamp test same", () => {
+    it("calculates future date", () => {
+      jest.useFakeTimers().setSystemTime(new Date('2022-05-23'));
+      const date = new Date('2022-05-23');
+      expect(daysSinceTimestamp(date)).toBe(0);
     });
   });
 
